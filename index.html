@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>esp32</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="flex-col flex-grow">
+        <div class="flex-col">
+            <h1 id="sonar"></h1>
+            <button onclick="fetch('/arm/toggle')">Arm/Disarm</button>
+        </div>
+        <div class="flex-grow"></div>
+        <div class="flex-col">
+            <div class="flex-row">
+                <button class="flex-grow" onclick="fetch('/laser/toggle')">Toggle Laser</button>
+                <input class="flex-grow" type="color" name="rgb_color" id="rgb_color" value="#000000" onchange="fetch(`/rgb/set?color=${document.getElementById('rgb_color').value.replace('#', '')}`)"></input>
+            </div>
+        </div>
+    </div>
+    <script>
+        setInterval(() => {
+            fetch("/sonar/get").then(res => res.text()).then(data => {
+                document.getElementById("sonar").innerText = data + " cm"
+            });
+        }, 1000);
+    </script>
+</body>
+</html>
